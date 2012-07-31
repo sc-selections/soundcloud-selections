@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>  
+    <title>SoundCloud Selections</title>
+    <meta charset="utf-8">
+    
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/css/content-list.css">
+	<link rel="stylesheet" type="text/css" href="/css/content-item.css">
+	
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="https://connect.soundcloud.com/sdk.js"></script>
+    <script type="text/javascript" src="/js/lib/underscore-min.js"></script>
+    <script type="text/javascript" src="/js/lib/backbone-min.js"></script>
+
+    <script type="text/javascript" src="/js/app.js"></script>
+    <script type="text/javascript" src="/js/app/model/track.model.js"></script>
+	<script type="text/javascript" src="/js/app/model/list.model.js"></script>
+    <script type="text/javascript" src="/js/app/collection/track.collection.js"></script>
+    <script type="text/javascript" src="/js/app/collection/list.collection.js"></script>
+    <script type="text/javascript" src="/js/app/view/track.content.view.js"></script>
+	<script type="text/javascript" src="/js/app/view/track.header.view.js"></script>
+    <script type="text/javascript" src="/js/app/view/track.item.view.js"></script>
+    <script type="text/javascript" src="/js/app/view/list.content.view.js"></script>
+    <script type="text/javascript" src="/js/app/view/list.header.view.js"></script>
+	<script type="text/javascript" src="/js/app/view/list.item.view.js"></script>
+    <script type="text/javascript" src="/js/app/view/app.request.view.js"></script>
+	<script type="text/javascript" src="/js/app/view/app.navigation.view.js"></script>
+    <script type="text/javascript" src="/js/app/view/app.content.view.js"></script>
+    <script type="text/javascript" src="/js/app/view/app.player.view.js"></script>
+	<script type="text/javascript" src="/js/config.js"></script>
+    <script type="text/javascript" src="/js/init.js"></script>
+</head>
+
+
+<body>
+
+<div id='app-wrapper'>
+		
+	<div id='login-wrapper'>
+	    <div id='login-header'>
+	    </div>
+	         
+	    <div id='login-content'>      
+	        <div id='app-title'>SoundCloud Selections</div>     
+	        <div id='app-subtitle'>Playlists for your favorite sounds</div>
+	        <div id='app-login-button'><img alt='login' title='login' src='/img/soundcloud_connect.png'></div>
+	    </div>
+	</div>
+	
+	<div id='content-wrapper'>
+	
+	    <div id='header'>
+	        <div id='main-navigation' class='navigation'>
+	        	<ul>
+	        		<li id='nav-playlist'>Playlists</li>
+                    <li id='nav-selection'>Selections</li>
+					<li id='nav-genre'>Genres</li>
+					<li id='nav-search'>Search</li>
+                    <li id='nav-bookmark'>Bookmarks</li>
+				</ul>		    
+			</div>
+			
+	        <div id='user-navigation' class='navigation'>
+	            <ul>
+	                <li id='nav-logout'>Logout</li>
+				</ul>
+	        </div>
+	    </div>
+	
+	    <div id='content'>
+	
+	        <div id='item-column'>
+	            <div id='item-wrapper'>
+	            	
+	                <div id='item-header'>
+					</div>					
+	                
+					<div id='item-container'>
+	                    <ul id='item-content'>
+	                    </ul>
+					</div>
+					
+	            </div>
+	       </div>
+	 
+	       <div id='list-column'>
+	            <div id='list-wrapper'>
+
+	                <div id='list-header'>
+					</div>
+
+	                <div id='list-container'>
+	                    <ul id='list-content'>
+	                    </ul>
+	                </div>
+					
+	            </div>
+	       </div>	       
+	   </div>
+			    
+	</div>
+	
+	<div id='footer'>
+        &copy; Kalu Kalu 2012 | <a href='http://lab.musicwishlists.com'>Music Wishlists Lab</a>		
+	</div>
+	
+</div>
+
+</body>
+</html>

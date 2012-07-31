@@ -1,0 +1,243 @@
+/**
+ * Stylesheet for the right content-based column of SoundCloud Selections
+ * 
+ * @author Kalu Kalu
+ * @since  July 29, 2012
+ */
+
+#item-column {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    float: left;
+}
+
+#item-wrapper {
+    height: 100%;
+    margin-left: 320px;     
+    overflow: auto;
+    min-width: 480px;
+}
+
+
+/* Styles for the header section */ 
+
+#item-header {
+    width: 100%;
+    height: 79px;
+    background-color: #ffab73;
+    border-bottom: 1px solid #f60;
+}
+
+    #item-header-info {
+    	margin-left: 10px;
+        font-size: 24px;
+        position: relative;
+        top: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+		opacity: 0.95;
+    }
+    
+    #item-header-info label {
+        display: none;
+    }
+    
+    #item-header-title {
+        color: #111;
+    }
+    
+    #item-header-title.single-line {
+        line-height: 62px;
+        height: 62px;           
+    }
+    
+    #item-header-description {
+        opacity: 0.6;
+    }
+    
+    #item-header-info input {
+        font-size: 16px;
+        padding: 4px;
+        color: #444;
+        min-width: 250px;
+        display: block;
+    }
+    
+    #item-wrapper.edit #item-header-info {
+        top: 4px;
+    }
+    
+    #item-wrapper.edit label {
+        display: inline-block;
+        opacity: 0.8;
+        font-size: 16px;
+        width: 110px;
+    }
+    
+    #item-wrapper.edit .edit-input {
+        display: inline-block;
+    }
+            
+    #item-header-info .edit-input,
+    #item-wrapper.edit .default-text {
+        display: none;
+    }                       
+            
+    #item-header-actions {
+        display: inline-block;
+        position: relative;
+        text-align: center;
+        margin-right: 16px;
+        margin-left: 16px;
+        float: right;
+    }       
+        #item-header-actions .button {
+            padding: 0px 10px;
+            line-height: 32px;
+            margin: 24px 8px;
+            width: 140px;
+        }
+        
+        #item-header-actions .edit-action,
+        #item-wrapper.edit .default-action {
+            display: none;
+        }
+            
+        #item-wrapper.edit .edit-action {
+            display: inline-block;
+        }
+                
+    .item-header-play {
+        float: right;
+        width: 42px;
+        height: 42px;
+        margin: 19px 19px 0 0;
+        background-image: url('/img/play_sprite.png');
+        background-size: auto 100%;
+        background-position: 0;     
+        cursor: pointer;       
+    }       
+
+    #item-header-content.play .item-header-play {
+        background-position: -100%;
+    }
+    
+                
+
+    
+/* Styles for the entries */ 
+    
+#item-container {
+    text-align: left;
+    position: relative;
+}
+            
+    .item-entry {
+        cursor: pointer;
+        user-select: none;
+        padding: 10px;
+        border-top: 1px solid #fff;
+        border-bottom: 1px solid #fff;          
+    }
+    
+    .item-entry:nth-child(2n) {
+        background-color: #f0f0f0;
+        border-top: 1px solid #f0f0f0;
+        border-bottom: 1px solid #f0f0f0;          
+    }
+    
+    .item-entry.selected {
+        background-color: #ffe6d5;
+        border-top: 1px solid #ffab73;
+        border-bottom: 1px solid #ffab73;
+    }
+
+    .item-entry-index {         
+        color: #101010;
+        opacity: 0.8;
+        font-size: 42px;
+        line-height: 100%;
+        position: absolute;
+    }
+    
+    .item-entry-info {
+        margin-left: 72px;
+        white-space: nowrap;
+        overflow: hidden;           
+     }
+    
+    .item-entry-title {
+        color: #101010;
+    }
+    
+    .item-entry-description {
+        margin: 0.2em 0;
+        opacity: 0.6;
+    }   
+    
+    .item-entry-actions {
+        margin-right: 10px;
+        margin-left: 16px;
+        line-height: 100%;
+        float: right;
+    }   
+    
+    .item-entry-actions img {
+        height: 42px;
+        width: 42px;    
+    }
+    
+    .item-entry-actions .button {
+        padding: 0px 10px;
+        line-height: 32px;
+        margin-top: 24px;
+        margin-bottom: 24px;
+    }
+    
+
+    .edit-action {
+        display: none;
+    }
+
+    #item-wrapper.edit .edit-action {
+        display: inline-block;
+    }       
+    
+
+    .item-entry-play {
+        margin-right: 10px;
+        margin-left: 16px;
+        float: right;
+        width: 42px;
+        height: 42px;
+        background-image: url('/img/play_sprite.png');
+        background-size: auto 100%;
+        background-position: 0;     
+        display: none;       
+    } 
+    
+    .item-entry.play .item-entry-play {
+        display: block;
+        background-position: -100%;
+    }
+    
+    .item-entry.pause .item-entry-play {
+        display: block;
+        background-position: 0%;
+    }
+                    
+#item-loading {
+    margin: 12px;
+    font-size: 20px;
+    text-align: left;
+	opacity: 0.6;
+}
+
+#item-empty {
+    margin: 12px;
+    font-size: 20px;
+    text-align: left;		
+	text-align: center;		
+	opacity: 0.6;
+}

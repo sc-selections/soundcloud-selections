@@ -1,0 +1,115 @@
+/**
+ * Stylesheet for the left list-based column of SoundCloud Selections
+ * 
+ * @author Kalu Kalu
+ * @since  July 29, 2012
+ */
+
+#list-column {
+    float: left;
+    width: 319px;
+    height: 100%;    
+    margin-left: -100%;
+    background-color: #dbdbf1;  
+    border-right: 1px solid #aaaaaa;
+}
+
+#list-wrapper {
+    width: 100%;
+    height: 100%;
+    background-color: #dbdbf1;
+    overflow: auto;
+}
+
+
+
+/* Styles for the list header  */
+
+#list-header-title {
+    font-size: 32px;
+    line-height: 80px;
+    height: 80px;
+    margin-bottom: 0.4em; 
+    text-align: center;
+}
+
+#list-header-info {
+    text-align: center;
+	margin: 20px;
+}
+	
+#list-header-description {
+	font-size: 16px;
+	opacity: 0.7;
+	margin-bottom: 20px;
+}
+
+#list-header-bookmarklet {
+	padding: 8px;
+}
+
+#list-input {
+    text-align: center;
+    position: relative;
+}
+    #list-input input {
+        font-size: 16px;
+        padding: 4px;
+        width: 200px;
+        margin-bottom: 1em;
+        color: #444;
+    }
+
+    #list-input .button {
+        display: inline-block;
+        margin-left: 8px;
+    }
+
+
+
+/* Styles for the list items */
+
+#list-container {
+    text-align: left;
+    position: relative;
+}
+    
+    .list-item {
+        cursor: pointer;
+        user-select: none;
+        margin: 0;
+        padding: 10px;
+        border-top: 1px solid #dbdbf1;
+        border-bottom: 1px solid #dbdbf1;
+    }
+    
+    .list-item:nth-child(2n-1) {
+        background-color: #e7e7f8;
+        border-top: 1px solid #e7e7f8;
+        border-bottom: 1px solid #e7e7f8;
+    }
+    
+    .list-item.selected {
+        background-color: #ffab73;
+        border-top: 1px solid #f60;
+        border-bottom: 1px solid #f60;
+    }
+    
+    .list-item-title {
+        color: #101010;
+    }
+    
+    .list-item-description {
+        margin: 0.2em 0;
+        opacity: 0.6;
+    }
+
+    .list-item-live .list-item-title,
+    .list-item-live .list-item-description  {
+        color:  #052d6e;
+    }
+            
+    .list-item-playing .list-item-title,
+    .list-item-playing .list-item-description  {
+        color:  #f60;
+    }        
