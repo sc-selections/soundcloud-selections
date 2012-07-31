@@ -17,6 +17,19 @@ Music for playlists can be found by exploring Selections, which are pre-defined 
 The goal behind SoundCloud Selections was to make as a possible to create Playlists for SoundCloud music.
 
 
+## Features
+
+- Create playlists for any music tracks on SoundCloud and edit/delete them with ease.
+
+- Find music tracks by using pre-defined SoundCloud music selections, exploring the music genres, or searching SoundCloud.
+
+- Music searches are automatically remembered and can also be saved as a playlist.
+
+- All music that is found can be instantly played with a single click, saved as a playlist, or added to a "Live Playlist".
+
+- Adding the Bookmarklet link to your browser bookmarks enables SoundCloud tracks to be bookmarked while browsing the SoundCloud.
+
+
 ## Technology
 
 SoundCloud Selections is an HTML 5 application written with Backbone and jQuery. It employs the SoundCloud javascript SDK for communication with SoundCloud.
