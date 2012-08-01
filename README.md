@@ -23,7 +23,7 @@ Once logged in with a SoundCloud account, users may instantly begin creating pla
 
 - All music that is found can be instantly played with a single click, saved as a playlist, or added to a "Live Playlist".
 
-- Adding the Bookmarklet link to your browser bookmarks enables SoundCloud tracks to be bookmarked while browsing the SoundCloud.
+- Adding the Bookmarklet link to your browser bookmarks enables SoundCloud tracks to be bookmarked while browsing SoundCloud.
 
 
 ## Technology
