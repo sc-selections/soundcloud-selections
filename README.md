@@ -1,8 +1,6 @@
 SoundCloud Selections
 =====================
 
-## Website
-
 http://selections.musicwishlists.com
 
 
