@@ -6,27 +6,28 @@
  * @author Kalu Kalu
  * @since  July 29, 2012
  */
+
 SelectionsApp.NavigationView = Backbone.View.extend({
 
     initialize: function()
     {
         this.setElement( $('#header') );
     },
-	
+    
     events: {
        "click #nav-playlist" : "showPlaylists",
        "click #nav-selection" : "showSelections",
        "click #nav-genre" : "showGenres",
        "click #nav-search" : "showSearches",
-	   "click #nav-bookmark" : "showBookmarks",
-	   "click #nav-logout" : "logout"
+       "click #nav-bookmark" : "showBookmarks",
+       "click #nav-logout" : "logout"
     },
-	
-	showPlaylists: function()
-	{
-		SelectionsApp.Content.showPlaylists();
-	},
-	
+    
+    showPlaylists: function()
+    {
+        SelectionsApp.Content.showPlaylists();
+    },
+    
     showSelections: function()
     {
         SelectionsApp.Content.showSelections();
@@ -41,16 +42,15 @@ SelectionsApp.NavigationView = Backbone.View.extend({
     {
         SelectionsApp.Content.showSearches();
     },
-	
+    
     showBookmarks: function()
     {
         SelectionsApp.Content.showBookmarks();
     },
 
-	logout: function()
-	{
-		SelectionsApp.Content.logout();
-	}
-	
-});
+    logout: function()
+    {
+        SelectionsApp.Content.logout();
+    }
     
+});

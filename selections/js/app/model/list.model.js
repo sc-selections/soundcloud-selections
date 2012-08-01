@@ -16,10 +16,10 @@
  */
 
 SelectionsApp.ListModel = Backbone.Model.extend({
-	
+    
     addSelectListener: function( callback )
     {
         this.on( 'select', callback );
     }
-	
+    
 });

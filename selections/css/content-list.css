@@ -35,17 +35,17 @@
 
 #list-header-info {
     text-align: center;
-	margin: 20px;
+    margin: 20px;
 }
-	
+    
 #list-header-description {
-	font-size: 16px;
-	opacity: 0.7;
-	margin-bottom: 20px;
+    font-size: 16px;
+    opacity: 0.7;
+    margin-bottom: 20px;
 }
 
 #list-header-bookmarklet {
-	padding: 8px;
+    padding: 8px;
 }
 
 #list-input {
@@ -112,4 +112,4 @@
     .list-item-playing .list-item-title,
     .list-item-playing .list-item-description  {
         color:  #f60;
-    }        
+    }

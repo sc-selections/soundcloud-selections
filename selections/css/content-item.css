@@ -30,13 +30,13 @@
 }
 
     #item-header-info {
-    	margin-left: 10px;
+        margin-left: 10px;
         font-size: 24px;
         position: relative;
         top: 10px;
         white-space: nowrap;
         overflow: hidden;
-		opacity: 0.95;
+        opacity: 0.95;
     }
     
     #item-header-info label {
@@ -231,13 +231,13 @@
     margin: 12px;
     font-size: 20px;
     text-align: left;
-	opacity: 0.6;
+    opacity: 0.6;
 }
 
 #item-empty {
     margin: 12px;
     font-size: 20px;
-    text-align: left;		
-	text-align: center;		
-	opacity: 0.6;
+    text-align: left;       
+    text-align: center;     
+    opacity: 0.6;
 }

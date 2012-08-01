@@ -13,43 +13,52 @@
 SelectionsApp.RequestView = Backbone.View.extend({
 
     initialize: function( args )
-	{
-		this.defaultOffset = 0;
-		this.defaultLimit = 10;
-	},
-	
-	setUserId: function( userId )
-	{
-		this.userId = userId;
-	},	
-	
-	setType: function( type )
-	{
-		this.type = type;
-	},
-    	
-		
+    {
+        this.defaultOffset = 0;
+        this.defaultLimit = 25;
+    },
+    
+    setUserId: function( userId )
+    {
+        this.userId = userId;
+    },  
+    
+    setType: function( type )
+    {
+        this.type = type;
+    },
+        
+        
 
-	//-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     // SoundCloud Track Requests
     //-------------------------------------------------------------------------
     
-	getSelectionTracks: function( listItem, collection, offset, limit )
+    getSelectionTracks: function( listItem, collection, offset, limit )
     {
-		var request = this; 
-		
-		offset = offset || this.defaultOffset;
-		limit  = limit  || this.defaultLimit;
-		
-        SC.get( listItem.get('path'), $.extend({}, listItem.get('options'), { offset: offset, limit: limit } ),
-		
-			function( tracks ) {
-			    request.addSoundCloudTracks( tracks, collection );
-			}
-				
-	    );           
-    },	
-	
+        var request,
+            options;
+            
+        request = this; 
+        options = listItem.get('options');
+        
+        offset = offset || options.offset || this.defaultOffset;
+        limit  = limit  || options.limit || this.defaultLimit;
+        
+        SC.get( listItem.get('path'), $.extend({}, options, { offset: offset, limit: limit } ),
+        
+            function( tracks, error ) {
+                
+                if( !error ) {
+                    request.addSoundCloudTracks( tracks, collection );
+                } else {
+                    SelectionsApp.Content.showEmptyTrackContent();
+                }
+            }
+                
+        );           
+    },  
+    
     getGenreTracks: function( listItem, collection, offset, limit )
     {
         var request = this; 
@@ -65,7 +74,7 @@ SelectionsApp.RequestView = Backbone.View.extend({
                 
         );           
     },
-	
+    
     getSearchTracks: function( listItem, collection, offset, limit )
     {
         var request = this; 
@@ -73,7 +82,7 @@ SelectionsApp.RequestView = Backbone.View.extend({
         offset = offset || this.defaultOffset;
         limit  = limit  || this.defaultLimit;
         
-        SC.get( "/tracks", { q: listItem.get('title'), order: "hotness", offset: offset, limit: limit },
+        SC.get( "/tracks", { q: encodeURIComponent( listItem.get('title') ), order: "hotness", offset: offset, limit: limit },
         
             function( tracks ) {
                 request.addSoundCloudTracks( tracks, collection );
@@ -81,12 +90,12 @@ SelectionsApp.RequestView = Backbone.View.extend({
                 
         );     
     },
-	
+    
     
     getBookmarkTracks: function( listItem, collection )
     {
-		var bookmarks,
-		    i;
+        var bookmarks,
+            i;
 
         bookmarks = SelectionsApp.Config.getBookmarks();
 
@@ -107,24 +116,24 @@ SelectionsApp.RequestView = Backbone.View.extend({
                 }
             });
         }           
-		
-		setTimeout( function() {
+        
+        setTimeout( function() {
 
-	        if( bookmarks.length === 0 )  {
-	            SelectionsApp.Content.showEmptyBookmarkContent();
-	        }    
-			
-		});
-		
-    },	
-	
-	getMoreTracks: function( listItem, collection )
-	{
+            if( bookmarks.length === 0 )  {
+                SelectionsApp.Content.showEmptyBookmarkContent();
+            }    
+            
+        });
+        
+    },  
+    
+    getMoreTracks: function( listItem, collection )
+    {
         var request,
-		    offset,
-			limit;
-			
-		request = this; 
+            offset,
+            limit;
+            
+        request = this; 
         
         offset = collection.size();
         limit  = this.defaultLimit;
@@ -144,7 +153,7 @@ SelectionsApp.RequestView = Backbone.View.extend({
                 break;
 
         }
-	},
+    },
 
     addSoundCloudTracks: function( tracks, collection )
     {
@@ -153,29 +162,35 @@ SelectionsApp.RequestView = Backbone.View.extend({
             numTracks,
             i;
         
-        numTracks = tracks.length;
+        numTracks = tracks ? tracks.length  : 0;
         
         for( i = 0; i < numTracks; i++ ) {
             
-            trackData  = tracks[i];
-            trackModel = new SelectionsApp.TrackModel({ 
-                id: trackData.id,
-                title: trackData.title, 
-                description: trackData.user.username,
-                data: trackData 
-            });
+            trackData = tracks[i];
             
-            collection.add( trackModel );
+            if( trackData.streamable ) {
+                
+                trackModel = new SelectionsApp.TrackModel({ 
+                    id: trackData.id,
+                    title: trackData.title, 
+                    description: trackData.user.username,
+                    data: trackData 
+                });
+                
+                collection.add( trackModel );               
+            }
+    
         }    
-		
+        
         if( numTracks === 0 ) {
             SelectionsApp.Content.showEmptyTrackContent();
         }    
-		   
+           
     },
 
 
-	
+    
+
 
     //-------------------------------------------------------------------------
     // User Playlist Requests
@@ -183,14 +198,14 @@ SelectionsApp.RequestView = Backbone.View.extend({
     getPlaylists: function()
     {
         var request,
-		    playlists,
+            playlists,
             playlistData,
             playlistModel,
             numPlaylists,
             i;
                
         request = this;     
-		
+        
         this.ajaxPostJson({
             
             url: '/resource/selections.php',
@@ -223,21 +238,21 @@ SelectionsApp.RequestView = Backbone.View.extend({
 
                     SelectionsApp.DefaultCollection.Playlists.add( playlistModel );
                 }
-				
-				if( numPlaylists === 0 ) {
-					
+                
+                if( numPlaylists === 0 ) {
+                    
                     playlistModel = new SelectionsApp.ListModel({ 
                         title: "New Playlist",
                         description: "My First Playlist"
                     } );
-					
-					request.addPlaylist( playlistModel );
-				}    
+                    
+                    request.addPlaylist( playlistModel );
+                }    
 
             }               
         });
     },
-		
+        
     addPlaylist: function( listItem, callback )
     {
         this.ajaxPostJson({
@@ -246,62 +261,71 @@ SelectionsApp.RequestView = Backbone.View.extend({
             
             data: {
                 action: 'add_playlist',
-				user_id: this.userId,
-                title: listItem.get('title'),
-				description: listItem.get('description')
+                user_id: this.userId,
+                title: encodeURIComponent( listItem.get('title') ),
+                description: encodeURIComponent( listItem.get('description') )
             },
             
             success: function( response ) {
-				
+                
                 if( response.status !== 1 ) {
                     alert( "Error saving playlist. Please try again later." );
                     return;
                 }
-				
-				listItem.set( {id: response.data} );
+                
+                listItem.set( {id: response.data} );
                 SelectionsApp.DefaultCollection.Playlists.add( listItem, {select: true} );
-				
-				if( callback ) {
-					callback( listItem );
-				}				
-			}
-		});
-	},
-	
-	saveAsPlaylist: function( listItem, trackCollection )
-	{
+                
+                if( callback ) {
+                    callback( listItem );
+                }               
+            }
+        });
+    },
+    
+    saveAsPlaylist: function( listItem, trackCollection )
+    {
         var request,
-		    numTracks,
-		    trackIds = '';
+            numTracks,
+            trackIds = '',
+            isLivePlaylist;
 
         request = this;
         
-        // Get playlist tracks ids as comma-separated values								
+        isLivePlaylist = SelectionsApp.Content.isLivePlaylistActive();
+        
+        // Get playlist tracks ids as comma-separated values                                
         numTracks = trackCollection.size();
-		
-		trackCollection.forEach( function(track) {
-			trackIds += track.id + ',';
-		});
-		
+        
+        trackCollection.forEach( function(track) {
+            trackIds += track.id + ',';
+        });
+        
         if( numTracks > 0 ) {     
-		    trackIds = trackIds.substring( 0, trackIds.length-1 );
-		}		
-		
+            trackIds = trackIds.substring( 0, trackIds.length-1 );
+        }       
+        
         // Switch to the playlist view
         SelectionsApp.Content.showPlaylists();
-		
+        
         // Add playlist and its tracks
-		this.addPlaylist( listItem, function( playlist ) {
+        this.addPlaylist( listItem, function( playlist ) {
 
             if( numTracks > 0 ) {     
                 request.addPlaylistTracks( playlist, trackIds );
-			}
-			
-		});
-	},
-	
-	addToPlaylist: function( playlist, trackCollection )
-	{
+            }
+
+            // Clear the live playlist as it has been saved as
+            // a user playlist.
+            if( isLivePlaylist ) {
+                SelectionsApp.Content.clearLivePlaylist();
+            }
+            
+        });
+    },
+    
+    addToPlaylist: function( playlist, trackCollection )
+    {
         var numTracks,
             trackIds = '';
 
@@ -319,13 +343,13 @@ SelectionsApp.RequestView = Backbone.View.extend({
         // Add tracks to playlist tracks
         if( numTracks > 0 ) {     
             this.addPlaylistTracks( playlist, trackIds );
-        }		
-		
-		// clear the live tracklist
-		if( SelectionsApp.Content.getLiveTrackCollection() === trackCollection ) {
-			SelectionsApp.Content.clearLivePlaylist();
-		}
-	},
+        }       
+        
+        // clear the live tracklist
+        if( SelectionsApp.Content.getLiveTrackCollection() === trackCollection ) {
+            SelectionsApp.Content.clearLivePlaylist();
+        }
+    },
 
 
     updatePlaylist: function( listItem, newTitle, newDescription )
@@ -337,7 +361,7 @@ SelectionsApp.RequestView = Backbone.View.extend({
             data: {
                 action: 'update_playlist',
                 user_id: this.userId,
-				playlist_id: listItem.id,
+                playlist_id: listItem.id,
                 title: newTitle,
                 description: newDescription
             },
@@ -353,7 +377,7 @@ SelectionsApp.RequestView = Backbone.View.extend({
             }
         });
     },
-	
+    
     deletePlaylist: function( listItem )
     {
         var tracks,
@@ -382,8 +406,8 @@ SelectionsApp.RequestView = Backbone.View.extend({
                 SelectionsApp.DefaultCollection.Playlists.remove( listItem );                
             }
         });
-    },	
-	
+    },  
+    
     addPlaylistTracks: function( playlist, trackIds )
     {
         this.ajaxPostJson({
@@ -404,18 +428,18 @@ SelectionsApp.RequestView = Backbone.View.extend({
                     return;
                 }
                 
-				playlist.trigger( 'refresh', playlist ); 
+                playlist.trigger( 'refresh', playlist ); 
             }               
         });
-    },	
-	
+    },  
+    
     removePlaylistTrack: function( track )
     {
-		var playlistId,
-		    trackCollection;
-		
-		playlistId = SelectionsApp.Content.getCurrentListModel().id;		
-		trackCollection = SelectionsApp.Content.getCurrentTrackCollection();
+        var playlistId,
+            trackCollection;
+        
+        playlistId = SelectionsApp.Content.getCurrentListModel().id;        
+        trackCollection = SelectionsApp.Content.getCurrentTrackCollection();
         
         this.ajaxPostJson({
             
@@ -423,10 +447,10 @@ SelectionsApp.RequestView = Backbone.View.extend({
             
             data: {
                 action: 'remove_playlist_track',
-				id: track.get('nativeId'),
-				user_id: this.userId,
+                id: track.get('nativeId'),
+                user_id: this.userId,
                 playlist_id: playlistId,
-				track_id: track.id
+                track_id: track.id
             },
             
             success: function( response ) {
@@ -441,18 +465,18 @@ SelectionsApp.RequestView = Backbone.View.extend({
                 if( trackCollection.size() === 0 ) {
                     SelectionsApp.Content.showEmptyTrackContent();
                 }    
-				
+                
             }               
         });
     },
-	
+    
     getPlaylistTracks: function( listItem, trackCollection )
     {
         var tracks,
             trackData,
             trackModel,
             numTracks,
-			nativeId,
+            nativeId,
             i;
                     
         this.ajaxPostJson({
@@ -475,36 +499,37 @@ SelectionsApp.RequestView = Backbone.View.extend({
                 numTracks = tracks.length;
                 
                 for( i = 0; i < numTracks; i++ ) {
-					
-					nativeId = tracks[i].id;
-					
-	                SC.get('/tracks/' + tracks[i].track_id, function( scTrack ) {
+                    
+                    nativeId = tracks[i].id;
+                    
+                    SC.get('/tracks/' + tracks[i].track_id, function( scTrack ) {
 
-			            trackModel = new SelectionsApp.TrackModel({ 
-			                id: scTrack.id,
-							nativeId: nativeId,
-			                title: scTrack.title, 
-			                description: scTrack.user.username,
-			                data: scTrack 
-			            });
-			            
-			            trackCollection.add( trackModel );
-	                });
+                        trackModel = new SelectionsApp.TrackModel({ 
+                            id: scTrack.id,
+                            nativeId: nativeId,
+                            title: scTrack.title, 
+                            description: scTrack.user.username,
+                            data: scTrack 
+                        });
+                        
+                        trackCollection.add( trackModel );
+                    });
                 }
-				
+                
                 if( numTracks === 0 ) {
                     SelectionsApp.Content.showEmptyTrackContent();
                 }    
-				
-			}               
+                
+            }               
         });
     },
-	
-	
-	
+    
+    
+    
     //-------------------------------------------------------------------------
     // User Search History Requests
     //-------------------------------------------------------------------------
+    
     getSearchEntries: function()
     {
         var searches,
@@ -548,7 +573,7 @@ SelectionsApp.RequestView = Backbone.View.extend({
             }               
         });
     },   
-		
+        
     addSearchEntry: function( listItem )
     {
         this.ajaxPostJson({
@@ -558,7 +583,7 @@ SelectionsApp.RequestView = Backbone.View.extend({
             data: {
                 action: 'add_search_entry',
                 user_id: this.userId,
-                query: listItem.get('title')
+                query: encodeURIComponent( listItem.get('title') )
             },
             
             success: function( response ) {
@@ -573,7 +598,7 @@ SelectionsApp.RequestView = Backbone.View.extend({
             }
         });
     },
-	
+    
     deleteSearchEntry: function( listItem )
     {
         this.ajaxPostJson({
@@ -593,24 +618,20 @@ SelectionsApp.RequestView = Backbone.View.extend({
                     return;
                 }
                 
-				
+                
                 SelectionsApp.DefaultCollection.Searches.remove( listItem );
-
-                if( SelectionsApp.DefaultCollection.Searches.size() === 0 ) {
-                    SelectionsApp.Content.showEmptyListContent();
-                }    
             }
         });
-    },  		
+    },          
              
-	
+    
     ajaxPostJson: function( settings )
     {
         $.ajax({
             url: settings.url,
             type: 'POST',
             data: settings.data,
-			cache: false,
+            cache: false,
             dataType: "json",
             success: function( response ) {
                 
@@ -625,6 +646,6 @@ SelectionsApp.RequestView = Backbone.View.extend({
             failure: settings.failure
         });     
                 
-    }	
-	
+    }   
+    
 });

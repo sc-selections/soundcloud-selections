@@ -16,21 +16,26 @@ SelectionsApp.ListContentView = Backbone.View.extend({
     
     initialize: function( args )
     {
-		this.type = args.type;
-		this.collection = args.collection;
+        this.type = args.type;
+        this.collection = args.collection;
     },
-	
+    
+    
+    //-------------------------------------------------------------------------
+    // Rendering Routines
+    //-------------------------------------------------------------------------
+    
     render: function()
     {
-		var contentView,
-		    listItemView,
-			liveListModel,
-			liveTrackCollection,
-			singleLine;
-		
-		if( !this.type || !this.collection ) {
-			return;
-		}		
+        var contentView,
+            listItemView,
+            liveListModel,
+            liveTrackCollection,
+            singleLine;
+        
+        if( !this.type || !this.collection ) {
+            return;
+        }       
 
         this.renderHeader();    
 
@@ -39,14 +44,13 @@ SelectionsApp.ListContentView = Backbone.View.extend({
 
         // All items are single-line rendered except playlists
         isSingleLine = this.type !== 'playlist';
-		
+        
         this.collection.forEach( function( playlist ) {
-	        contentView.addListItem( playlist, isSingleLine );				   
-		    
-		});
+            contentView.addListItem( playlist, isSingleLine );                 
+            
+        });
 
-
-		return this;				
+        return this;                
     },
 
     renderHeader: function()
@@ -61,87 +65,96 @@ SelectionsApp.ListContentView = Backbone.View.extend({
         this.renderHeader();
     },
 
-	addListItem: function( listItem, isSingleLine, index, select )
-	{
+
+    //-------------------------------------------------------------------------
+    // List Manipulation Routines
+    //-------------------------------------------------------------------------
+
+    addListItem: function( listItem, isSingleLine, index, select )
+    {
         var listItemView,
-		    listItemWrapper,
-		    listItemElement,
-		    prevListItemElement;
+            listItemWrapper,
+            listItemElement,
+            prevListItemElement;
 
         listItemView = new SelectionsApp.ListItemView( { model: listItem, singleLine: isSingleLine } );
-		listItemElement = listItemView.render().el;
-		
-		// Find the right place to add the item
-		if( !index && index !== 0 ) {
+        listItemElement = listItemView.render().el;
+        
+        if( !index && index !== 0 ) {
             
-			this.$el.append( listItemElement );
-			
-		} else if( index === -1 ) {
-			
+            // no index is specified - just append
+            this.$el.append( listItemElement );
+            
+        } else if( index === -1 ) {
+            
+            // insert to the very first position in the list            
             prevListItemElement = this.$el.children().eq( 0 );
-			
-			if( prevListItemElement && prevListItemElement.size() > 0  ) {
-                prevListItemElement.before( listItemElement );
-			} else {
-				this.$el.append( listItemElement );
-			}                					
-		
-		} else {
             
-			prevListItemElement = this.$el.children().eq( index );
+            if( prevListItemElement && prevListItemElement.size() > 0  ) {
+                prevListItemElement.before( listItemElement );
+            } else {
+                this.$el.append( listItemElement );
+            }                                   
+        
+        } else {
+            
+            // insert to the specified position in the list            
+            prevListItemElement = this.$el.children().eq( index );
 
             if( prevListItemElement && prevListItemElement.size() > 0 ) {
                 prevListItemElement.after( listItemElement );               
             } else {
-				this.$el.append( listItemElement );
-			}                                   
-			
-		}
-		
-		
+                this.$el.append( listItemElement );
+            }                                   
+            
+        }
+        
+        
+        // Select this item if there is not currently a selected item
+                     
         if( !SelectionsApp.Content.selectedListItemView ) {
             SelectionsApp.Content.selectedListItemView = listItemView;
             select = true;
-		}
-		
-		if( select ) {			
-			this.selectListItem( listItemView, listItemElement );			
-	    }
-		
-		return listItemView;
-	},
-	
-	removeListItem: function( index )
-	{
-		var listItemElement,
-		    siblingListItemElement,
-			siblingIndex;
-		
-		if( index > 0 ) {
-			siblingIndex = index - 1;
-		} else {
-			siblingIndex = index + 1;
-		}
-		
+        }
+        
+        if( select ) {          
+            this.selectListItem( listItemView, listItemElement );           
+        }
+        
+        return listItemView;
+    },
+    
+    removeListItem: function( index )
+    {
+        var listItemElement,
+            siblingListItemElement,
+            siblingIndex;
+        
+        if( index > 0 ) {
+            siblingIndex = index - 1;
+        } else {
+            siblingIndex = index + 1;
+        }
+        
         listItemElement = this.$el.children().eq( index );
         siblingListItemElement = this.$el.children().eq( siblingIndex );
         
-		// Remove item
-		if( listItemElement && listItemElement.size() > 0 ) {
-			
-			$(listItemElement).remove();
-			
-		}
-		
-		// Select closest sibling
+        // Remove the specified list item
+        if( listItemElement && listItemElement.size() > 0 ) {
+            
+            $(listItemElement).remove();
+            
+        }
+        
+        // Select the closest sibling
         if( siblingListItemElement && siblingListItemElement.size() > 0 ) {
             
             $(siblingListItemElement).click();
             
         }
-		
-	},
-	
+        
+    },
+    
     addDynamicPlaylist: function( listItem, className, select )
     {
         var dynamicPlaylistView,
@@ -170,17 +183,17 @@ SelectionsApp.ListContentView = Backbone.View.extend({
     {
         var existingPlaylist = this.$el.children( '.' + className );
         if( existingPlaylist && existingPlaylist.size() > 0 ) {
-			
-			if( selectSibling ) {
-			    this.removeListItem( $(existingPlaylist).index() );
-		    } else {
-				$(existingPlaylist).remove();
-			}
+            
+            if( selectSibling ) {
+                this.removeListItem( $(existingPlaylist).index() );
+            } else {
+                $(existingPlaylist).remove();
+            }
         }
     },
-	
-	refreshListItem: function( listItem, index )
-	{
+    
+    refreshListItem: function( listItem, index )
+    {
         var listItemView,
             oldlistItemElement,
             newListItemElement;
@@ -195,53 +208,53 @@ SelectionsApp.ListContentView = Backbone.View.extend({
                 listItemView = new SelectionsApp.ListItemView( { model: listItem } );
                 newListItemElement = listItemView.render().el;
                 oldlistItemElement = this.$el.children().eq( index );
-				
-			    if( oldlistItemElement ) {
-					$(oldlistItemElement).replaceWith( newListItemElement );
-				}
+                
+                if( oldlistItemElement ) {
+                    $(oldlistItemElement).replaceWith( newListItemElement );
+                }
                 listItemView.select();
                 break;
-        }		
-	},
+        }       
+    },
 
     selectListItemByIndex: function( listItemView, index )
-	{
-		var listItemElement = this.$el.children().eq( index );
-		
-		if( listItemElement ) {
-			this.selectListItem( listItemView, listItemElement );
-		}
-	},
-	
-	selectListItem: function( listItemView, listItemElement )
-	{
-		var listItemWrapper,
-		    offset;
-		   
-		listItemWrapper = $('#list-wrapper');
-		listItemElement = $(listItemElement);
-		
-		listItemView.select();
+    {
+        var listItemElement = this.$el.children().eq( index );
+        
+        if( listItemElement ) {
+            this.selectListItem( listItemView, listItemElement );
+        }
+    },
+    
+    selectListItem: function( listItemView, listItemElement )
+    {
+        var listItemWrapper,
+            offset;
+           
+        listItemWrapper = $('#list-wrapper');
+        listItemElement = $(listItemElement);
+        
+        listItemView.select();
                         
-		offset = listItemWrapper.scrollTop() + 
-		         listItemElement.offset().top + 
-		         listItemElement.height() - 
-		         listItemWrapper.height();
-		             
-		if( offset > 0 ) {
-		
-		    $('#list-wrapper').animate({
-		        scrollTop: offset
-		    }, 150 );
-		}		
-		
-	},
-	
-	close: function()
-	{
-	  this.$el.html( null );
-	  SelectionsApp.Content.selectedListItemView = null;
-	}
-	
+        offset = listItemWrapper.scrollTop() + 
+                 listItemElement.offset().top + 
+                 listItemElement.height() - 
+                 listItemWrapper.height();
+                     
+        if( offset > 0 ) {
+        
+            $('#list-wrapper').animate({
+                scrollTop: offset
+            }, 150 );
+        }       
+        
+    },
+        
+    close: function()
+    {
+      this.$el.html( null );
+      SelectionsApp.Content.selectedListItemView = null;
+    }
+    
     
 });

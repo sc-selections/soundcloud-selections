@@ -24,19 +24,19 @@ class SelectionsDatabase
         if( !$userId || !$title || !$description ) { return false; };
 
         $dbHandle = SelectionsDatabase::getDatabaseHandle();
-		
-		$userId = mysqli_real_escape_string( $dbHandle, $userId );
+        
+        $userId = mysqli_real_escape_string( $dbHandle, $userId );
         $title = mysqli_real_escape_string( $dbHandle, $title );
         $description = mysqli_real_escape_string( $dbHandle, $description );
                 
         $table = SelectionsDatabase::table_playlist;
         $query = "INSERT INTO $table (uid,title,description) VALUES ('$userId','$title','$description')";
-		
+        
         $success = SelectionsDatabase::database_query( $dbHandle, $query );
         
         return $success ? mysqli_insert_id( $dbHandle ) : false;
     }
-	
+    
     public static function updatePlaylist( $userId, $playlistId, $title, $description )
     {
         if( !$userId || !$title || !$description ) { return false; };
@@ -53,8 +53,8 @@ class SelectionsDatabase
         $success = SelectionsDatabase::database_query( $dbHandle, $query );
         
         return $success ? true : false;
-    }	
-    	
+    }   
+        
     public static function deletePlaylist( $userId, $playlistId )
     {
         if( !$userId || !$playlistId ) { return false; };
@@ -71,15 +71,15 @@ class SelectionsDatabase
         
         return $success ? true : false;
     }
-	
-	
+    
+    
     public static function addPlaylistTracks( $playlistId, $trackIds )
     {
         if( !$playlistId || !$trackIds ) { return false; };
 
         $dbHandle = SelectionsDatabase::getDatabaseHandle();
         
-		
+        
         $playlistId = mysqli_real_escape_string( $dbHandle, $playlistId );
         
         $table = SelectionsDatabase::table_playlist_track;
@@ -92,21 +92,21 @@ class SelectionsDatabase
         for( $i = 0; $i < $numTracks; $i++ ) {
             
             $trackId = mysqli_real_escape_string( $dbHandle, $trackIds[$i] );
-			$queries[] = "INSERT INTO $table (playlist_id,track_id) VALUES ('$playlistId','$trackId')";
-		}
-		                      
+            $queries[] = "INSERT INTO $table (playlist_id,track_id) VALUES ('$playlistId','$trackId')";
+        }
+                              
         $success = SelectionsDatabase::database_multi_query( $dbHandle, $queries );
         
         return $success ? mysqli_insert_id( $dbHandle ) : false;
-    }   	
-	
+    }       
+    
     public static function removePlaylistTrack( $id, $playlistId, $trackId )
     {
         if( !$id || !$playlistId || !$trackId ) { return false; };
 
         $dbHandle = SelectionsDatabase::getDatabaseHandle();
         
-		$id = mysqli_real_escape_string( $dbHandle, $id );
+        $id = mysqli_real_escape_string( $dbHandle, $id );
         $playlistId = mysqli_real_escape_string( $dbHandle, $playlistId );
         $trackId = mysqli_real_escape_string( $dbHandle, $trackId );
                 
@@ -116,9 +116,9 @@ class SelectionsDatabase
         $success = SelectionsDatabase::database_query( $dbHandle, $query );
         
         return $success ? true : false;
-    }       	
-	
-	
+    }           
+    
+    
     public static function getPlaylists( $userId )
     {
         if( !$userId ) { return false; };
@@ -143,7 +143,7 @@ class SelectionsDatabase
                                         
         return $playlists;  
     }
-	
+    
     public static function getPlaylistTracks( $playlistId )
     {
         if( !$playlistId ) { return false; };
@@ -167,11 +167,11 @@ class SelectionsDatabase
         mysqli_free_result( $results );
                                         
         return $playlistTracks;  
-    }		
-	
-	
-	
-	
+    }       
+    
+    
+    
+    
     //-------------------------------------------------------------------------
     // Database Search History APIs
     //-------------------------------------------------------------------------
@@ -208,8 +208,8 @@ class SelectionsDatabase
         $success = SelectionsDatabase::database_query( $dbHandle, $query );
         
         return $success ? true : false;
-    }	
-	
+    }   
+    
     public static function getSearchEntries( $userId )
     {
         $dbHandle = SelectionsDatabase::getDatabaseHandle();
@@ -233,15 +233,15 @@ class SelectionsDatabase
         mysqli_free_result( $results );
                                         
         return $searchHistory;      
-    }	
-	
-	
-	
-	
+    }   
+    
+    
+    
+    
     //-------------------------------------------------------------------------
     // Database Private Methods
     //-------------------------------------------------------------------------
-	
+    
     private static function database_query( $database_handle, $query )
     {
         $results = mysqli_query( $database_handle, $query );
@@ -251,8 +251,8 @@ class SelectionsDatabase
         } 
         
         return $results;
-    }	
-	
+    }   
+    
     private static function database_multi_query( $database_handle, $queries )
     {
         $query = implode( ";", $queries );
@@ -263,8 +263,8 @@ class SelectionsDatabase
         } 
         
         return $results;
-    }	
-	
+    }   
+    
     private static function getDatabaseHandle()
     {
         $username = "guest_selections";
@@ -274,7 +274,7 @@ class SelectionsDatabase
         $dbname   = "selections_data";
         
         return mysqli_connect( $host, $username, $password, $dbname, $port );
-    }       	
+    }           
 }
 
 ?>

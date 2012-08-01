@@ -14,15 +14,16 @@ SelectionsApp.PlayerView = Backbone.View.extend({
     
     initialize: function()
     {
+        // Setup the Now Playing list entry item and 
+        // hook up the selection listener
+        
         this.nowPlayingList = new SelectionsApp.ListModel({
             title: "Now Playing",
             description: "Currently Playing Tracklist"
         });
-		
-		this.nowPlayingTrackCollection = new SelectionsApp.ListCollection();
-
         
-		this.nowPlayingList.addSelectListener( this.onNowPlayingSelect );
+        this.nowPlayingTrackCollection = new SelectionsApp.ListCollection();
+        this.nowPlayingList.addSelectListener( this.onNowPlayingSelect );
     },
     
     stopTrack: function()
@@ -37,8 +38,8 @@ SelectionsApp.PlayerView = Backbone.View.extend({
             this.currentTrackPlaying.set( {sound: null} );
             this.currentTrackPlaying = null;
             
-		    this.updateNowPlayingPlaylist();
-			
+            this.updateNowPlayingPlaylist();
+            
             return true;        
         }
         
@@ -52,10 +53,11 @@ SelectionsApp.PlayerView = Backbone.View.extend({
         if( this.currentTrackPlaying ) {
             trackSound = this.currentTrackPlaying.get( 'sound' );            
             trackSound.pause();
-			
-	        SelectionsApp.Content.updateTrack( this.currentTrackPlaying );
-	        SelectionsApp.Content.updateHeader();
-			
+            
+            // Refresh the UI 
+            SelectionsApp.Content.updateTrack( this.currentTrackPlaying );
+            SelectionsApp.Content.updateHeader();
+            
             return true;        
         }
         
@@ -70,9 +72,10 @@ SelectionsApp.PlayerView = Backbone.View.extend({
             trackSound = this.currentTrackPlaying.get( 'sound' );            
             trackSound.play();
 
+            // Refresh the UI 
             SelectionsApp.Content.updateTrack( this.currentTrackPlaying );
-            SelectionsApp.Content.updateHeader();			
-			
+            SelectionsApp.Content.updateHeader();           
+            
             return true;        
         }
         
@@ -86,37 +89,37 @@ SelectionsApp.PlayerView = Backbone.View.extend({
         
         if( this.currentTrackPlaying ) {
             trackSound = this.currentTrackPlaying.get( 'sound' );
-			
-			if( trackSound ) {
-                paused = trackSound.playState === 1 && trackSound.paused;			
-			}			
+            
+            if( trackSound ) {
+                paused = trackSound.playState === 1 && trackSound.paused;           
+            }           
         }
         
         return paused;
     },
-	
-	play: function()
-	{
+    
+    play: function()
+    {
         var trackCollection = SelectionsApp.Content.getCurrentTrackCollection();
         
         if( trackCollection.size() > 0 ) {
             
-			this.playTrack( trackCollection.at( 0 ) );
-			                
+            this.playTrack( trackCollection.at( 0 ) );
+                            
         } else {
-			
+            
             alert( "There are no tracks available for playback." );
             return false;
-			
+            
         }   
-		
-		return true; 		
-	},  
+        
+        return true;        
+    },  
     
     playTrack: function( track )
     {       
         var contentView,
-		    trackCollection,
+            trackCollection,
             trackSound;
 
         if( !track ) {
@@ -125,84 +128,56 @@ SelectionsApp.PlayerView = Backbone.View.extend({
         
         trackCollection = SelectionsApp.Content.getCurrentTrackCollection();
         
+        // Only update the player's TrackCollection when required       
         if( this.currentTrackCollection !== trackCollection && this.nowPlayingTrackCollection !== trackCollection ) {
             this.nowPlayingTrackCollection.reset();
             this.nowPlayingTrackCollection.add( trackCollection.models );
             this.currentTrackCollection = trackCollection;
         }
-		
-		
+        
+        
         this.stopTrack();
         this.currentTrackPlaying = this.nowPlayingTrackCollection.get( track.id );
         
         contentView = this;
         
-		// fetch the SoundCloud stream url for the track
-		
+        
+        // fetch the SoundCloud stream url for the track and
+        // hook up callbacks
+        
         SC.stream("/tracks/" + track.id, 
             
-			{ whileplaying: contentView.onWhileSoundPlaying,
+            { whileplaying: contentView.onWhileSoundPlaying,
               onfinish: contentView.onSoundFinished,
               onfailure: contentView.onSoundFinished
-			},
-			
+            },
+            
             function( soundObject ) {
-				
-				if( contentView.currentTrackPlaying.id === track.id ) {
-	                
-					contentView.currentTrackPlaying.set( {sound: soundObject } );
-	                soundObject.play();
-					
-				} else {
-					
-					soundObject.unload();
-				}
+                
+                if( contentView.currentTrackPlaying.id === track.id ) {
+                    
+                    contentView.currentTrackPlaying.set( {sound: soundObject } );
+                    soundObject.play();
+                    
+                } else {
+                    
+                    soundObject.unload();
+                }
             }
         );
         
-		
-		this.updateNowPlayingPlaylist();
-		
+
+        // Refresh the UI 
+        this.updateNowPlayingPlaylist();
+        
         SelectionsApp.Content.updateHeader();
         SelectionsApp.Content.updateTrack( this.currentTrackPlaying );
-		
+        
         return true;        
     },
-	
-	isPlaying: function()
-	{
-		return this.currentTrackPlaying && !this.isPaused();
-	},
-	
-	getCurrentTrack: function()
-	{
-		return this.currentTrackPlaying;
-	},
-	
-    updateNowPlayingPlaylist: function()
+    
+    playNextTrack: function()
     {        
-        if( this.currentTrackPlaying ) {
-            SelectionsApp.Content.addDynamicPlaylist( this.nowPlayingList, 'list-item-playing' );
-        }
-    },
-	
-	getNowPlayingList: function()
-	{
-		return this.nowPlayingList;
-	},
-	
-	getNowPlayingTrackCollection: function()
-	{
-		return this.nowPlayingTrackCollection;
-	},
-	
-    onNowPlayingSelect: function( listModel )
-    {
-        SelectionsApp.Content.showTracks( listModel );
-    },
-	
-	playNextTrack: function()
-	{        
         var index,
             collection,
             nextTrack;
@@ -214,15 +189,64 @@ SelectionsApp.PlayerView = Backbone.View.extend({
             nextTrack = collection.at( index + 1 );
             
             if( nextTrack ) {
-				this.stopTrack();
+                this.stopTrack();
                 this.playTrack( nextTrack );
             }
-        }		
-	}, 
+        }       
+    },     
+    
+    updateNowPlayingPlaylist: function()
+    {        
+        var isSelectedCollection;
+        
+        if( this.currentTrackPlaying ) {
+            isSelectedCollection = SelectionsApp.Content.getCurrentTrackCollection() === this.nowPlayingTrackCollection;
+            SelectionsApp.Content.addDynamicPlaylist( this.nowPlayingList, 'list-item-playing', isSelectedCollection );
+        }
+    },  
+    
+    
+    
+    /* Public Accessor Methods */
+    
+    isPlaying: function()
+    {
+        return this.currentTrackPlaying && !this.isPaused();
+    },
+    
+    getCurrentTrack: function()
+    {
+        return this.currentTrackPlaying;
+    },
+    
+    getNowPlayingList: function()
+    {
+        return this.nowPlayingList;
+    },
+    
+    getNowPlayingTrackCollection: function()
+    {
+        return this.nowPlayingTrackCollection;
+    },
+    
+    isTrackCollectionPlaying: function( trackCollection )
+    {
+        return trackCollection === this.nowPlayingTrackCollection ||
+               trackCollection === this.currentTrackCollection;
+    },
 
-	onSoundFinished: function()
-	{
+    
+    
+    /* Event Listener Callback Routines */
+    
+    onNowPlayingSelect: function( listModel )
+    {
+        SelectionsApp.Content.showTracks( listModel );
+    },
+    
+    onSoundFinished: function()
+    {
         SelectionsApp.Player.playNextTrack();
-	}
-	
+    }
+    
 });

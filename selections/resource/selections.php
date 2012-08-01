@@ -99,23 +99,4 @@ function getPostValue( $index )
     return isset( $_POST[$index] ) && $_POST[$index] !== 'null' ? $_POST[$index] : null;
 }
 
-//$results = SelectionsDatabase::getPlaylists( '1' );
-
-//$results = SelectionsDatabase::getPlaylistTracks( '2' );
-
-//$results = SelectionsDatabase::getSearchEntries( '1' );
-
-//SelectionsDatabase::removePlaylistTrack( '2', '2', '9876' );
-
-//SelectionsDatabase::addPlaylistTrack( '2', '9876' );
-
-//SelectionsDatabase::deletePlaylist( '1', '1' );
-
-//SelectionsDatabase::addPlaylist( '1', "Canadian Places", "Favorite Songs Across Canada" );
-
-//SelectionsDatabase::updatePlaylist( '1', '1', "Canadian Places OLD", "Favorite Songs Across Canada OLD" );
-
-//SelectionsDatabase::addSearchEntry( '1', "Ontario" );
-
-
 ?>

@@ -36,6 +36,11 @@ SelectionsApp.TrackHeaderView = Backbone.View.extend({
 		this.type = args.type;
 		this.model = args.model;
     },
+
+
+    //-------------------------------------------------------------------------
+    // Render Routines
+    //-------------------------------------------------------------------------
                               
     render: function()
     {	
@@ -93,6 +98,11 @@ SelectionsApp.TrackHeaderView = Backbone.View.extend({
         return this;
     },
 	
+
+    //-------------------------------------------------------------------------
+    // Track Header Manipulation Routines
+    //-------------------------------------------------------------------------
+
 	editPlaylist: function()
 	{
 		$('#item-wrapper').addClass( 'edit' );
@@ -128,7 +138,7 @@ SelectionsApp.TrackHeaderView = Backbone.View.extend({
 			return;
 		}
 		
-        title = prompt( "Enter New Playlist Name", this.model.title );
+        title = prompt( "Enter New Playlist Name", this.model.get('title') );
 		
 		if( title ) {
 		    newListModel = new SelectionsApp.ListModel( { title: title, description: "My New Playlist" } );		
@@ -224,11 +234,7 @@ SelectionsApp.TrackHeaderView = Backbone.View.extend({
 	        if( SelectionsApp.Player.play() ) {
 	            this.$el.addClass( "play" );            
 	        }
-
-			
 		}		
-        
-		
     },
 	
 	clearTracks: function()
@@ -246,7 +252,9 @@ SelectionsApp.TrackHeaderView = Backbone.View.extend({
 	
 	
 	
-    // Templates for Track Header View
+    //-------------------------------------------------------------------------
+    // Templates for track header UI
+    //-------------------------------------------------------------------------
 	
     playlistTemplate: _.template( "<div class='item-header-play'></div>" +
                                   "<div id='item-header-actions'>" +

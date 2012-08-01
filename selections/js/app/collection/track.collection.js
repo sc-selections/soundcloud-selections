@@ -17,7 +17,7 @@
 SelectionsApp.TrackCollection = Backbone.Collection.extend({
     
     model: SelectionsApp.TrackModel,
-	
+    
     addInsertListener: function( callback )
     {
         this.on( 'add', callback );
@@ -27,16 +27,16 @@ SelectionsApp.TrackCollection = Backbone.Collection.extend({
     {
         this.on( 'remove', callback );
     },
-	
+    
     addRefreshListener: function( callback )
     {
         this.on( 'refresh', callback );
-    },   	
-	
-	containsTrackId: function( trackId )
-	{
-		var track = this.get( trackId );		
-		return track ? true : false;
-	}	
-	        
+    },      
+    
+    containsTrackId: function( trackId )
+    {
+        var track = this.get( trackId );        
+        return track ? true : false;
+    }   
+            
 });

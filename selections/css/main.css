@@ -28,66 +28,17 @@ html, body {
     top: 43px;
     bottom: 25px;
     overflow: hidden;
-	min-width: 900px;
+    min-width: 900px;
 }
 
-	#content ul {
-	    margin: 0;
-	    padding: 0;
-	}
+    #content ul {
+        margin: 0;
+        padding: 0;
+    }
 
     #content li {
         list-style: none;
     }
-
-#app-wrapper {
-	height: 100%;
-}
-	#app-wrapper.logged-in #login-wrapper {
-	    display: none;
-	}
-	
-	#app-wrapper.logged-in #content-wrapper {
-	    display: block;
-	}
-	
-#login-wrapper {
-    height: 100%;
-    background-color: #dbdbf1;
-}
-
-#login-content {
-    position: absolute;
-	width: 100%;
-    top: 50%;       
-    height: 250px;
-    margin-top: -150px;
-    background-color: #dbdbf1;
-	bottom: 25px;
-    text-align: center;
-}
-
-#content-wrapper {
-	display: none;
-}
-
-    #app-title {
-        font-size: 64px;
-        margin-bottom: 32px;
-        white-space: nowrap;            
-    }
-
-    #app-subtitle {
-        font-size: 32px;
-        margin-bottom: 64px;
-        opacity: 0.7;
-    }
-    
-    #app-login-button {
-        cursor: pointer; 
-    }
-
-
 
 #footer {  
     position: absolute;
@@ -146,20 +97,69 @@ html, body {
         text-decoration:none;
         color: #f0f0f0;
         text-align: center;
-		opacity: 0.8;
+        opacity: 0.8;
     }
     
     .navigation li:hover {
         color: #F60;
-		cursor: pointer;
+        cursor: pointer;
         opacity: 1.0;
     }   
     
     .navigation li.selected {
         color: #FFFF40;
     }       
-	
-	
+
+
+#login-wrapper {
+    height: 100%;
+    background-color: #dbdbf1;
+}
+
+#login-content {
+    position: absolute;
+    width: 100%;
+    top: 50%;       
+    height: 250px;
+    margin-top: -150px;
+    background-color: #dbdbf1;
+    bottom: 25px;
+    text-align: center;
+}
+
+#content-wrapper {
+    display: none;
+}
+
+    #app-title {
+        font-size: 64px;
+        margin-bottom: 32px;
+        white-space: nowrap;            
+    }
+
+    #app-subtitle {
+        font-size: 32px;
+        margin-bottom: 64px;
+        opacity: 0.7;
+    }
+    
+    #app-login-button {
+        cursor: pointer; 
+    }
+
+
+#app-wrapper {
+    height: 100%;
+}
+    #app-wrapper.logged-in #login-wrapper {
+        display: none;
+    }
+    
+    #app-wrapper.logged-in #content-wrapper {
+        display: block;
+    }   
+
+    
 .button {   
     background-color:#111;
     color: #e2e2e2;

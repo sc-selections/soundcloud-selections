@@ -24,12 +24,12 @@ SelectionsApp.ListCollection = Backbone.Collection.extend({
     {
         this.on( 'select', callback );
     },
-	
-	addInsertListener: function( callback )
-	{
-		this.on( 'add', callback );
-	},
-	
+    
+    addInsertListener: function( callback )
+    {
+        this.on( 'add', callback );
+    },
+    
     addRemoveListener: function( callback )
     {
         this.on( 'remove', callback );
@@ -39,10 +39,10 @@ SelectionsApp.ListCollection = Backbone.Collection.extend({
     {
         this.on( 'change', callback );
     },
-	
+    
     addRefreshListener: function( callback )
     {
         this.on( 'refresh', callback );
     }   
-		
+        
 });

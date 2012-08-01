@@ -32,4 +32,4 @@ The goal behind SoundCloud Selections was to make as a possible to create Playli
 
 ## Technology
 
-SoundCloud Selections is an HTML 5 application written with Backbone and jQuery. It employs the SoundCloud javascript SDK for communication with SoundCloud.
+SoundCloud Selections is an web application written with HTML/Javascript, Backbone, jQuery, and the SoundCloud Javascript SDK. The application is backed by a light-weight PHP/SQL implementation.
