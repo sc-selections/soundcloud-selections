@@ -16,21 +16,21 @@ $result = null;
 
 switch( $action )
 {
-	
-	/* Database Playlist Calls */
-	
-	case 'get_playlists':
-		$result = SelectionsDatabase::getPlaylists( $userId );
-		break;
+    
+    /* Database Playlist Calls */
+    
+    case 'get_playlists':
+        $result = SelectionsDatabase::getPlaylists( $userId );
+        break;
 
     case 'add_playlist':
-		$title = getPostValue( "title" );
-		$description = getPostValue( "description" );
+        $title = getPostValue( "title" );
+        $description = getPostValue( "description" );
         $result = SelectionsDatabase::addPlaylist( $userId, $title, $description );
         break;
 
     case 'update_playlist':
-		$playlistId = getPostValue( "playlist_id" );
+        $playlistId = getPostValue( "playlist_id" );
         $title = getPostValue( "title" );
         $description = getPostValue( "description" );
         $result = SelectionsDatabase::updatePlaylist( $userId, $playlistId, $title, $description );
@@ -45,33 +45,33 @@ switch( $action )
     /* Database Playlist Track Calls */
 
     case 'get_playlist_tracks':
-		$playlistId = getPostValue( "playlist_id" );
+        $playlistId = getPostValue( "playlist_id" );
         $result = SelectionsDatabase::getPlaylistTracks( $playlistId );
         break;
-		
+        
     case 'add_playlist_tracks':
         $playlistId = getPostValue( "playlist_id" );
-		$trackIdList = getPostValue( "track_ids" );
-		$trackIds = explode( ',', $trackIdList );        
-        $result = SelectionsDatabase::addPlaylistTracks( $playlistId, $trackIds );			
+        $trackIdList = getPostValue( "track_ids" );
+        $trackIds = explode( ',', $trackIdList );        
+        $result = SelectionsDatabase::addPlaylistTracks( $playlistId, $trackIds );          
         break;
 
     case 'remove_playlist_track':
-		$id = getPostValue( "id" );
+        $id = getPostValue( "id" );
         $playlistId = getPostValue( "playlist_id" );
-		$trackId = getPostValue( "track_id" );
+        $trackId = getPostValue( "track_id" );
         $result = SelectionsDatabase::removePlaylistTrack( $id, $playlistId, $trackId );
         break;
 
 
     /* Database Search Calls */
-	
+    
     case 'get_search_entries':
         $result = SelectionsDatabase::getSearchEntries( $userId );
         break;
 
     case 'add_search_entry':
-		$query = getPostValue( "query" );
+        $query = getPostValue( "query" );
         $result = SelectionsDatabase::addSearchEntry( $userId, $query );
         break;
 
