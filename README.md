@@ -1,4 +1,4 @@
-soundcloud-selections
+SoundCloud Selections
 =====================
 
 ## Website
