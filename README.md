@@ -26,6 +26,6 @@ Once logged in with a SoundCloud account, users may instantly begin creating pla
 
 ## Technology
 
-SoundCloud Selections is an web application written with HTML/Javascript, Backbone, jQuery, and the SoundCloud Javascript SDK. 
+SoundCloud Selections is a web application written with HTML/Javascript, Backbone, jQuery, and the SoundCloud Javascript SDK. 
 
 The application is backed by a light-weight PHP/SQL implementation.

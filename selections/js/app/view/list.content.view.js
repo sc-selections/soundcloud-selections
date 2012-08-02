@@ -127,17 +127,16 @@ SelectionsApp.ListContentView = Backbone.View.extend({
     removeListItem: function( index )
     {
         var listItemElement,
-            siblingListItemElement,
-            siblingIndex;
-        
-        if( index > 0 ) {
-            siblingIndex = index - 1;
-        } else {
-            siblingIndex = index + 1;
-        }
+            siblingListItemElement;
         
         listItemElement = this.$el.children().eq( index );
-        siblingListItemElement = this.$el.children().eq( siblingIndex );
+        siblingListItemElement = this.$el.children().eq( index + 1 );
+        
+		if( !siblingListItemElement || siblingListItemElement.size() > 0 ) {
+		    siblingListItemElement = this.$el.children().eq( index - 1 );
+		}
+
+		
         
         // Remove the specified list item
         if( listItemElement && listItemElement.size() > 0 ) {

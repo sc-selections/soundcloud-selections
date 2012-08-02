@@ -288,7 +288,10 @@ SelectionsApp.ContentView = Backbone.View.extend({
         return SelectionsApp.Player.isTrackCollectionPlaying( this.currentTrackCollection );
     },      
     
-        
+    isNowPlayingView: function()
+    {
+        return SelectionsApp.Player.getNowPlayingTrackCollection() === this.currentTrackCollection;
+    },         
 
 
     //-------------------------------------------------------------------------
