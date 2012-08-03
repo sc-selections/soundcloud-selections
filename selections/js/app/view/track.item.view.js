@@ -210,7 +210,7 @@ SelectionsApp.TrackItemView = Backbone.View.extend({
             
         } else {
 
-            verifyRemove = confirm( "Remove track from this playlist?" );
+            verifyRemove = confirm( "Remove \"" + track.get('title') + "\" from this playlist?" );
             
             if( verifyRemove ) {
                 SelectionsApp.Request.removePlaylistTrack( track );

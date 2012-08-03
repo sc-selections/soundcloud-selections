@@ -178,12 +178,12 @@ SelectionsApp.ContentView = Backbone.View.extend({
         this.updateLivePlaylist();
     },
     
-    showTracks: function( listModel )
+    showTracks: function( listModel, forceRefresh )
     {
         var index;
         
         // check to see if the view is already being displayed 
-        if( this.currentTrackView && this.currentTrackView.listModel === listModel ) {
+        if( !forceRefresh && this.currentTrackView && this.currentTrackView.listModel === listModel ) {
             return;
         }
         
@@ -468,7 +468,7 @@ SelectionsApp.ContentView = Backbone.View.extend({
     
     onListSelect: function( listModel )
     {
-        SelectionsApp.Content.showTracks( listModel );
+        SelectionsApp.Content.showTracks( listModel, true );
     },
 
     onListInsert: function( listItem, collection, options )
