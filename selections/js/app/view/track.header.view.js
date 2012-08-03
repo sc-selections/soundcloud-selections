@@ -46,10 +46,27 @@ SelectionsApp.TrackHeaderView = Backbone.View.extend({
     {   
         var listModelData,
             isActiveView,
-            isPlaying;
-            
-        listModelData = this.model.toJSON();
+            isPlaying,
+            trackCollection,
+            icon_url,
+            track,
+            size,
+            i;
         
+        listModelData = this.model.toJSON();
+
+        trackCollection = SelectionsApp.Content.getCurrentTrackCollection();
+        size = trackCollection.size();
+
+        i = 0;
+        
+        while( i < trackCollection.size() && !icon_url ) {          
+            track = trackCollection.at( i );
+            icon_url = track.get( 'data' ).artwork_url;         
+            i++;
+        }
+        listModelData.icon_url = icon_url || '';         
+
         // Depending on the state of selected list item and its type
         // choose the appropriate template for rendering.
         
@@ -256,7 +273,8 @@ SelectionsApp.TrackHeaderView = Backbone.View.extend({
     // Templates for track header UI
     //-------------------------------------------------------------------------
     
-    playlistTemplate: _.template( "<div class='item-header-play'></div>" +
+    playlistTemplate: _.template( "<div id='item-header-icon' <% if( icon_url ) { print(\"style='background-image: url(\" + icon_url + \")'\") } %> />" +
+                                  "<div class='item-header-play'></div>" +
                                   "<div id='item-header-actions'>" +
                                       "<div id='edit-button' class='button default-action'>Edit Playlist</div>" +
                                       "<div id='delete-button' class='button edit-action'>Delete Playlist</div>" +
@@ -269,7 +287,8 @@ SelectionsApp.TrackHeaderView = Backbone.View.extend({
                                       "<div><label for='item-header-description-input'>Description</label><input id='item-header-description-input' class='edit-input' type='text' value='<%= description %>'/></div>" +
                                   "</div>" ), 
                                   
-    liveTracksPlaylistTemplate: _.template( "<div class='item-header-play'></div>" +
+    liveTracksPlaylistTemplate: _.template( "<div id='item-header-icon' <% if( icon_url ) { print(\"style='background-image: url(\" + icon_url + \")'\") } %> />" +
+                                  "<div class='item-header-play'></div>" +
                                   "<div id='item-header-actions'>" +
                                       "<div id='add-live-button' class='button default-action'>Add Live Tracks</div>" +
                                       "<div id='edit-button' class='button default-action'>Edit Playlist</div>" +
@@ -283,7 +302,8 @@ SelectionsApp.TrackHeaderView = Backbone.View.extend({
                                       "<div><label for='item-header-description-input'>Description</label><input id='item-header-description-input' class='edit-input' type='text' value='<%= description %>'/></div>" +
                                   "</div>" ),                                    
 
-    searchTemplate: _.template( "<div class='item-header-play'></div>" +
+    searchTemplate: _.template( "<div id='item-header-icon' <% if( icon_url ) { print(\"style='background-image: url(\" + icon_url + \")'\") } %> />" +
+                                  "<div class='item-header-play'></div>" +
                                   "<div id='item-header-actions'>" +
                                       "<div id='delete-button' class='button default-action'>Delete Search</div>" +
                                       "<div id='more-tracks-button' class='button default-action'>Get More Tracks</div>" +
@@ -293,7 +313,8 @@ SelectionsApp.TrackHeaderView = Backbone.View.extend({
                                       "<div id='item-header-title' class='default-text single-line'><%= title %></div>" +        
                                   "</div>" ),
                                   
-    bookmarkTemplate: _.template( "<div class='item-header-play'></div>" +
+    bookmarkTemplate: _.template( "<div id='item-header-icon' <% if( icon_url ) { print(\"style='background-image: url(\" + icon_url + \")'\") } %> />" +
+                                  "<div class='item-header-play'></div>" +
                                   "<div id='item-header-actions'>" +
                                       "<div id='clear-button' class='button default-action'>Clear All</div>" +
                                       "<div id='save-playlist-button' class='button default-action'>Save As Playlist</div>" +
@@ -302,7 +323,8 @@ SelectionsApp.TrackHeaderView = Backbone.View.extend({
                                       "<div id='item-header-title' class='default-text single-line'><%= title %></div>" +        
                                   "</div>" ),                                 
                                   
-    livePlaylistTemplate: _.template( "<div class='item-header-play'></div>" +
+    livePlaylistTemplate: _.template( "<div id='item-header-icon' <% if( icon_url ) { print(\"style='background-image: url(\" + icon_url + \")'\") } %> />" +
+                                  "<div class='item-header-play'></div>" +
                                   "<div id='item-header-actions'>" +
                                       "<div id='clear-button' class='button default-action'>Clear All</div>" +
                                       "<div id='save-playlist-button' class='button default-action'>Save As Playlist</div>" +
@@ -311,7 +333,8 @@ SelectionsApp.TrackHeaderView = Backbone.View.extend({
                                       "<div id='item-header-title' class='default-text single-line'><%= title %></div>" +        
                                   "</div>" ),
 
-    nowPlayingTemplate: _.template( "<div class='item-header-play'></div>" +
+    nowPlayingTemplate: _.template( "<div id='item-header-icon' <% if( icon_url ) { print(\"style='background-image: url(\" + icon_url + \")'\") } %> />" +
+                                  "<div class='item-header-play'></div>" +
                                   "<div id='item-header-actions'>" +
                                       "<div id='save-playlist-button' class='button default-action'>Save As Playlist</div>" +
                                   "</div>" +
@@ -319,7 +342,8 @@ SelectionsApp.TrackHeaderView = Backbone.View.extend({
                                       "<div id='item-header-title' class='default-text single-line'><%= title %></div>" +        
                                   "</div>" ), 
                                   
-    externalContentTemplate: _.template( "<div class='item-header-play'></div>" +
+    externalContentTemplate: _.template( "<div id='item-header-icon' <% if( icon_url ) { print(\"style='background-image: url(\" + icon_url + \")'\") } %> />" +
+                                  "<div class='item-header-play'></div>" +
                                   "<div id='item-header-actions'>" +
                                       "<div id='more-tracks-button' class='button default-action'>Get More Tracks</div>" +
                                       "<div id='save-playlist-button' class='button default-action'>Save As Playlist</div>" +

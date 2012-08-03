@@ -180,6 +180,13 @@ SelectionsApp.ContentView = Backbone.View.extend({
     
     showTracks: function( listModel )
     {
+        var index;
+        
+        // check to see if the view is already being displayed 
+        if( this.currentTrackView && this.currentTrackView.listModel === listModel ) {
+            return;
+        }
+        
         if( listModel === this.livePlaylist ) {
             
             this.currentTrackCollection = this.liveTrackCollection;
@@ -230,6 +237,13 @@ SelectionsApp.ContentView = Backbone.View.extend({
         });
             
         this.currentTrackView.render();
+        
+        if( this.isNowPlayingView() ) {
+            index = this.currentTrackCollection.indexOf( SelectionsApp.Player.getCurrentTrack() );
+            if( index !== -1 ) {
+                this.currentTrackView.scrollToTrackIndex( index );
+            }
+        }
             
     },  
 

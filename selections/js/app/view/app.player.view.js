@@ -26,6 +26,11 @@ SelectionsApp.PlayerView = Backbone.View.extend({
         this.nowPlayingList.addSelectListener( this.onNowPlayingSelect );
     },
     
+    getCurrentTimestamp: function() 
+    {
+        return this.currentTrackPlaying ? this.trackPosition + ' / ' + this.trackDuration : '';
+    },
+    
     stopTrack: function()
     {
         var trackSound;
@@ -135,6 +140,8 @@ SelectionsApp.PlayerView = Backbone.View.extend({
             this.currentTrackCollection = trackCollection;
         }
         
+        this.trackPosition = '0:00';
+        this.trackDuration = '0:00';
         
         this.stopTrack();
         this.currentTrackPlaying = this.nowPlayingTrackCollection.get( track.id );
@@ -180,18 +187,22 @@ SelectionsApp.PlayerView = Backbone.View.extend({
     {        
         var index,
             collection,
+            currentTrack,
             nextTrack;
 
+
+        currentTrack = this.getCurrentTrack();
+        
         collection = this.getNowPlayingTrackCollection();
-        index = collection.indexOf( this.getCurrentTrack() );
+        index = collection.indexOf( currentTrack );
+        
+        this.stopTrack();
         
         if( index !== -1 && index < collection.size() - 1 ) {
             nextTrack = collection.at( index + 1 );
-            
-            if( nextTrack ) {
-                this.stopTrack();
-                this.playTrack( nextTrack );
-            }
+            this.playTrack( nextTrack );
+        } else {
+            SelectionsApp.Content.updateTrack( currentTrack );
         }       
     },     
     
@@ -203,7 +214,48 @@ SelectionsApp.PlayerView = Backbone.View.extend({
             isSelectedCollection = SelectionsApp.Content.getCurrentTrackCollection() === this.nowPlayingTrackCollection;
             SelectionsApp.Content.addDynamicPlaylist( this.nowPlayingList, 'list-item-playing', isSelectedCollection );
         }
-    },  
+    }, 
+    
+    updateTrackPosition: function()
+    {
+        var currentTrackCollection,
+            currentTrackPosition,
+            currentTrackDuration,           
+            seconds,
+            minutes,
+            trackSound;
+        
+        // only update when now playing is in view
+        currentTrackCollection = SelectionsApp.Content.getCurrentTrackCollection(); 
+        if( currentTrackCollection !== this.currentTrackCollection && 
+            currentTrackCollection !== this.nowPlayingTrackCollection ) {
+            return;
+        }       
+        
+        trackSound = this.currentTrackPlaying.get( 'sound' );
+        
+        currentTrackPosition = trackSound.position;
+        currentTrackDuration = this.currentTrackPlaying.get('data').duration;
+        
+        // update position
+        minutes = Math.floor( currentTrackPosition / 60000 );
+        seconds = Math.floor( ( currentTrackPosition % 60000 ) / 1000 );        
+        seconds = ( seconds < 10 ) ? '0' + seconds : seconds;
+        currentTrackPosition = minutes + ':' + seconds;
+                
+        // update duration
+        minutes = Math.round( currentTrackDuration / 60000 );
+        seconds = Math.round( ( currentTrackDuration % 60000 ) / 1000 );       
+        seconds = ( seconds < 10 ) ? '0' + seconds : seconds;
+        currentTrackDuration = minutes + ':' + seconds;
+        
+        if( this.trackPosition !== currentTrackPosition ) {
+            this.trackPosition = currentTrackPosition;
+            this.trackDuration = currentTrackDuration;
+            SelectionsApp.Content.updateTrack( this.currentTrackPlaying );
+        }
+        
+    },
     
     
     
@@ -211,7 +263,13 @@ SelectionsApp.PlayerView = Backbone.View.extend({
     
     isPlaying: function()
     {
-        return this.currentTrackPlaying && !this.isPaused();
+        return this.currentTrackPlaying && !this.isPaused() &&!this.isStopped();
+    },
+    
+    isStopped: function()
+    {
+        var trackSound = this.currentTrackPlaying ? this.currentTrackPlaying.get('sound') : null;       
+        return trackSound ? trackSound.playState === 0 : false; 
     },
     
     getCurrentTrack: function()
@@ -244,6 +302,11 @@ SelectionsApp.PlayerView = Backbone.View.extend({
         SelectionsApp.Content.showTracks( listModel );
     },
     
+    onWhileSoundPlaying: function()
+    {
+        SelectionsApp.Player.updateTrackPosition();
+    },
+
     onSoundFinished: function()
     {
         SelectionsApp.Player.playNextTrack();

@@ -66,7 +66,7 @@ SelectionsApp.RequestView = Backbone.View.extend({
         offset = offset || this.defaultOffset;
         limit  = limit  || this.defaultLimit;
         
-        SC.get( "/tracks", { genres: encodeURIComponent( listItem.get('title') ), order: "hotness", offset: offset, limit: limit },
+        SC.get( "/tracks", { genres: listItem.get('title'), offset: offset, limit: limit },
         
             function( tracks ) {
                 request.addSoundCloudTracks( tracks, collection );
@@ -82,7 +82,7 @@ SelectionsApp.RequestView = Backbone.View.extend({
         offset = offset || this.defaultOffset;
         limit  = limit  || this.defaultLimit;
         
-        SC.get( "/tracks", { q: encodeURIComponent( listItem.get('title') ), order: "hotness", offset: offset, limit: limit },
+        SC.get( "/tracks", { q: listItem.get('title'), offset: offset, limit: limit },
         
             function( tracks ) {
                 request.addSoundCloudTracks( tracks, collection );
@@ -182,7 +182,7 @@ SelectionsApp.RequestView = Backbone.View.extend({
     
         }    
         
-        if( numTracks === 0 ) {
+        if( numTracks === 0 && collection.size() === 0 ) {
             SelectionsApp.Content.showEmptyTrackContent();
         }    
            

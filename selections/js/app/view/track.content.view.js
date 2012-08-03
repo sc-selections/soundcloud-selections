@@ -102,6 +102,8 @@
         size = SelectionsApp.Content.getCurrentTrackCollection().size();
         trackView = new SelectionsApp.TrackItemView( { model: track, index: size-1, type: this.type } );
         
+        this.refreshHeader();
+
         this.setElement( $("#item-content") );
         
         if( clear ) {
@@ -115,10 +117,10 @@
 
     removeTrack: function( index )
     {
-        var listItemElement = this.$el.children().eq( index );
-        if( listItemElement && listItemElement.size() > 0 ) {
+        var trackItemElement = this.$el.children().eq( index );
+        if( trackItemElement && trackItemElement.size() > 0 ) {
             
-            $(listItemElement).remove();
+            $(trackItemElement).remove();
             
         }
     },
@@ -126,8 +128,8 @@
     refreshTrack: function( track, index, select )
     {
         var trackView,
-            oldlistItemElement,
-            newListItemElement;
+            oldtrackItemElement,
+            newTrackItemElement;
 
         if( !track || ( !index && index !== 0 ) ) {
             return;
@@ -137,11 +139,11 @@
         
         this.setElement( $("#item-content") );
         trackView = new SelectionsApp.TrackItemView( { model: track, index: index, type: this.type } );            
-        newListItemElement = trackView.render().el;
-        oldlistItemElement = this.$el.children().eq( index );
+        newTrackItemElement = trackView.render().el;
+        oldtrackItemElement = this.$el.children().eq( index );
         
-        if( oldlistItemElement ) {
-            $(oldlistItemElement).replaceWith( newListItemElement );
+        if( oldtrackItemElement ) {
+            $(oldtrackItemElement).replaceWith( newTrackItemElement );
         }
         
         if( select ) {
@@ -164,6 +166,37 @@
             this.render();
         }       
     },
+    
+    scrollToTrackIndex: function( index )
+    {
+        var trackItemElement = this.$el.children().eq( index );
+        
+        if( trackItemElement ) {
+            this.scrollToTrackItem( trackItemElement );
+        }
+    },
+    
+    scrollToTrackItem: function( trackItemElement )
+    {
+        var trackItemWrapper,
+            offset;
+           
+        trackItemWrapper = $('#item-wrapper');
+        trackItemElement = $(trackItemElement);
+        
+        offset = trackItemWrapper.scrollTop() + 
+                 trackItemElement.offset().top + 
+                 trackItemElement.height() - 
+                 trackItemWrapper.height();
+                     
+        if( offset > 0 ) {
+        
+            $('#item-wrapper').animate({
+                scrollTop: offset
+            }, 150 );
+        }       
+        
+    },  
     
     close: function()
     {

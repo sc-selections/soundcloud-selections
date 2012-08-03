@@ -38,6 +38,7 @@ SelectionsApp.TrackItemView = Backbone.View.extend({
     render: function()
     {
         var isLivePlaylistTrack,
+            isCurrentPlayingTrack,
             track,
             trackData,
             template;
@@ -47,26 +48,29 @@ SelectionsApp.TrackItemView = Backbone.View.extend({
         // Select the template for representing tracks.
         // Note: All non-user playlist tracks can be added at any time.
         
-        switch( this.type ) {
+        if( SelectionsApp.Content.isNowPlayingView() || 
+            SelectionsApp.Content.isLivePlaylistActive() || this.type !== 'playlist' ) {
             
-            case 'playlist':
-                template = this.playlistTemplate;
-                break;
+            isLivePlaylistTrack = SelectionsApp.Content.isLivePlaylistTrack( track );           
+            template = isLivePlaylistTrack ? this.removeTrackTemplate : this.addTrackTemplate;
             
-            default:
-                isLivePlaylistTrack = SelectionsApp.Content.isLivePlaylistTrack( track );           
-                template = isLivePlaylistTrack ? this.removeTrackTemplate : this.addTrackTemplate;
-                break;
+        } else {
+            
+            template = this.playlistTemplate;
+            
         }
         
         // Render the view
+        isCurrentPlayingTrack = SelectionsApp.Player.getCurrentTrack() === track;
+        
         trackData = track.toJSON();
-        trackData.index = this.index;         
+        trackData.index = this.index;
+        trackData.time = isCurrentPlayingTrack ? SelectionsApp.Player.getCurrentTimestamp() : null;
         this.$el.html( template( trackData ) );      
         
         
         // Check if this track is playing & update UI       
-        if( SelectionsApp.Player.getCurrentTrack() === track ) {
+        if( isCurrentPlayingTrack ) {
             this.select();
         }
         
@@ -226,6 +230,7 @@ SelectionsApp.TrackItemView = Backbone.View.extend({
                                       "<img class='item-entry-remove' src='/img/remove.png' title='Remove Track' alt='remove'/>" +
                                   "</div>" +
                                   "<div class='item-entry-play'></div>" +
+                                  "<div class='item-entry-time'><% if( time ) { print( time ) } %></div>" +
                                   "<div class='item-entry-index'><%= index %></div>" +
                                   "<div class='item-entry-info'>" +                               
                                       "<div class='item-entry-title'><%= title %></div>" +
@@ -236,6 +241,7 @@ SelectionsApp.TrackItemView = Backbone.View.extend({
                                       "<img class='item-entry-remove' src='/img/remove.png' title='Remove Track' alt='remove'/>" +
                                   "</div>" +
                                   "<div class='item-entry-play'></div>" +
+                                  "<div class='item-entry-time'><% if( time ) { print( time ) } %></div>" +
                                   "<div class='item-entry-index'><%= index %></div>" +
                                   "<div class='item-entry-info'>" +                               
                                       "<div class='item-entry-title'><%= title %></div>" +
@@ -246,6 +252,7 @@ SelectionsApp.TrackItemView = Backbone.View.extend({
                                       "<img class='item-entry-add' src='/img/add.png' title='Add Track' alt='add'/>" +
                                   "</div>" +
                                   "<div class='item-entry-play'></div>" +
+                                  "<div class='item-entry-time'><% if( time ) { print( time ) } %></div>" +
                                   "<div class='item-entry-index'><%= index %></div>" +
                                   "<div class='item-entry-info'>" +                               
                                       "<div class='item-entry-title'><%= title %></div>" +

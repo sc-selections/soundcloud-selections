@@ -82,7 +82,16 @@
     #item-header-info .edit-input,
     #item-wrapper.edit .default-text {
         display: none;
-    }                       
+    }                 
+    
+    #item-header-icon {
+        height: 64px;
+        width: 64px;
+        float: left;
+        margin: 8px;
+        padding: 0;
+        border: 1px solid #f60;
+    }      
             
     #item-header-actions {
         display: inline-block;
@@ -226,6 +235,22 @@
         display: block;
         background-position: 0%;
     }
+    
+    .item-entry-time {
+        float: right;
+        line-height: 42px;
+        opacity: 0.8;
+        display: none;
+    }
+    
+    .item-entry.play .item-entry-time {
+        display: block;
+    }
+    
+    .item-entry.pause .item-entry-time {
+        display: block;
+    }
+        
                     
 #item-loading {
     margin: 12px;
