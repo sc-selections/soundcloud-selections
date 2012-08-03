@@ -218,7 +218,7 @@ SelectionsApp.PlayerView = Backbone.View.extend({
     
     updateTrackPosition: function()
     {
-        var currentTrackCollection,
+        var trackCollection,
             currentTrackPosition,
             currentTrackDuration,           
             seconds,
@@ -226,9 +226,10 @@ SelectionsApp.PlayerView = Backbone.View.extend({
             trackSound;
         
         // only update when now playing is in view
-        currentTrackCollection = SelectionsApp.Content.getCurrentTrackCollection(); 
-        if( currentTrackCollection !== this.currentTrackCollection && 
-            currentTrackCollection !== this.nowPlayingTrackCollection ) {
+        trackCollection = SelectionsApp.Content.getCurrentTrackCollection(); 
+        if( !SelectionsApp.Content.isLivePlaylistActive() &&
+		    trackCollection !== this.currentTrackCollection && 
+            trackCollection !== this.nowPlayingTrackCollection ) {
             return;
         }       
         
