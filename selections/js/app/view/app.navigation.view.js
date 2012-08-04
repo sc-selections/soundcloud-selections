@@ -25,32 +25,47 @@ SelectionsApp.NavigationView = Backbone.View.extend({
     
     showPlaylists: function()
     {
-        SelectionsApp.Content.showPlaylists();
+        SelectionsApp.Content.showPlaylists();      
+        this.updateActiveHeader( '#nav-playlist' );
     },
     
     showSelections: function()
     {
         SelectionsApp.Content.showSelections();
+        this.updateActiveHeader( '#nav-selection' );
     },
 
     showGenres: function()
     {
         SelectionsApp.Content.showGenres();
+        this.updateActiveHeader( '#nav-genre' );
     },
 
     showSearches: function()
     {
         SelectionsApp.Content.showSearches();
+        this.updateActiveHeader( '#nav-search' );
     },
     
     showBookmarks: function()
     {
         SelectionsApp.Content.showBookmarks();
+        this.updateActiveHeader( '#nav-bookmark' );
     },
 
     logout: function()
     {
         SelectionsApp.Content.logout();
+    },
+    
+    updateActiveHeader: function( elementId )
+    {
+        if( this.activeHeader ) {
+            $(this.activeHeader).removeClass( 'selected' );
+        }
+        
+        this.activeHeader = elementId;
+        $(this.activeHeader).addClass( 'selected' );
     }
     
 });

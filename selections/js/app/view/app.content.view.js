@@ -63,7 +63,7 @@ SelectionsApp.ContentView = Backbone.View.extend({
     
     login: function()
     {
-        var contentView = this;
+        var content = this;
         
         SC.connect(function() {
 
@@ -75,10 +75,10 @@ SelectionsApp.ContentView = Backbone.View.extend({
                     SelectionsApp.Request.setUserId( user.id );
                     
                     // Display content
-                    contentView.$el.addClass( 'logged-in' );
+                    content.$el.addClass( 'logged-in' );
 
                     // Show playlists by default
-                    SelectionsApp.Content.showPlaylists();         
+                    content.navigationView.showPlaylists();         
                 
                 } else {
                     
@@ -181,8 +181,7 @@ SelectionsApp.ContentView = Backbone.View.extend({
     showTracks: function( listModel, forceRefresh )
     {
         var index;
-        
-        // check to see if the view is already being displayed 
+
         if( !forceRefresh && this.currentTrackView && this.currentTrackView.listModel === listModel ) {
             return;
         }

@@ -103,11 +103,12 @@ html, body {
     .navigation li:hover {
         color: #F60;
         cursor: pointer;
-        opacity: 1.0;
+        opacity: 0.9;
     }   
     
     .navigation li.selected {
-        color: #FFFF40;
+        color: #F60;
+        opacity: 1.0;
     }       
 
 
